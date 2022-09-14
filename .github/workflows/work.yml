@@ -1,0 +1,48 @@
+name: Github-Remote-Desktop
+
+on: workflow_dispatch
+
+jobs:
+  REMOTE:
+    runs-on: windows-latest
+    steps:
+    - name: Set variable
+      run: iex ((new-object net.webclient).DownloadString('https://github.com/NightFall-Dev/potential-lamp/raw/main/scripts/enable-rdp.ps1'))
+      env:
+       RDP_PASSWORD: ${{ secrets.RDP_PASSWORD }}
+    - name: Download Required Scripts
+      run: |
+        Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok-v3-stable-windows-amd64.zip
+        7z x ngrok-v3-stable-windows-amd64.zip
+        Invoke-WebRequest https://github.com/NightFall-Dev/potential-lamp/raw/main/Files/nssm.exe -OutFile nssm.exe
+        Move-Item nssm.exe C:\Windows\System32\
+        Invoke-WebRequest https://github.com/NightFall-Dev/potential-lamp/raw/main/Files/NGROK-CFG-GEN.bat -OutFile NGROK-CFG-GEN.bat
+        Invoke-WebRequest https://github.com/NightFall-Dev/potential-lamp/raw/main/Files/NGROK-CHECK.bat -OutFile NGROK-CHECK.bat
+    - name: 1. Add NGROK_AUTH_TOKEN to NGROK config
+      run: |
+       .\ngrok.exe config add-authtoken $env:NGROK_AUTH_TOKEN --config=".\ngrok.yml"
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+      shell: powershell
+    - name: 2. Update NGROK config
+      run: |
+       start .\NGROK-CFG-GEN.bat
+      shell: powershell
+    - name: 3. Enable Remote Desktop Access
+      run: |
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+    - name: 4. Start NGROK
+      run: |
+       Start-Process Powershell -ArgumentList '-Noexit -Command "ngrok.exe start --all"'
+    #- name: 5b. Start NGROK
+    #  run: |
+    #   ngrok.exe start --all
+    #  shell: cmd
+    # ngrok start --all -> use this if you are running ngrok as service
+    - name: 7. Display results
+      run: cmd /c NGROK-CHECK.bat
+    - name: 8. Task Completed
+      run: |
+        $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://github.com/NightFall-Dev/potential-lamp/raw/main/scripts/enable-rdp.ps1'))
+      shell: powershell
