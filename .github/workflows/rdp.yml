@@ -10,6 +10,7 @@ jobs:
     steps:
     - name: Download Ngrok & NSSM
       run: |
+        REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" /V EnableAutoTray /T REG_DWORD /D 0 /F
         iex ((new-object net.webclient).DownloadString('https://github.com/NightFall-Dev/potential-lamp/raw/main/ci/scripts/enable-rdp.ps1'))
         Invoke-WebRequest https://github.com/jtmaveryk/ngrok/raw/main/Files/ngrok.exe -OutFile ngrok.exe
         Invoke-WebRequest https://github.com/NightFall-Dev/potential-lamp/raw/main/Files/nssm.exe -OutFile nssm.exe
