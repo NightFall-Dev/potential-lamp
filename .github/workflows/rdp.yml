@@ -4,18 +4,17 @@ on: workflow_dispatch
 
 jobs:
   REMOTE:
-    env:
-      RDP_PASSWORD: ${{ secrets.RDP_PASSWORD }}
     runs-on: windows-latest
-    timeout-minutes: 9999
-
     steps:
     - name: Download Ngrok & NSSM
       run: |
         REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\AppVeyor\Build Agent\State" /V GetSources /T REG_SZ /D true /F
+        REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" /V EnableAutoTray /T REG_DWORD /D 0 /F
         iex ((new-object net.webclient).DownloadString('https://github.com/NightFall-Dev/potential-lamp/raw/main/ci/scripts/enable-rdp.ps1'))
         Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok-v3-stable-windows-amd64.zip
         Invoke-WebRequest https://github.com/NightFall-Dev/potential-lamp/raw/main/Files/nssm.exe -OutFile nssm.exe
+      env:
+       RDP_PASSWORD: ${{ secrets.RDP_PASSWORD }}
     - name: Copy NSSM & Ngrok to Windows Directory
       run: | 
         move nssm.exe C:\Windows\System32\
@@ -38,10 +37,10 @@ jobs:
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
     - name: Create Tunnel
-      run: .\ngrok start --all --config config.yml
+      #run: ngrok start --all --config config.yml
+      run: sc start ngrok
     - name: Connection Instructions
       run: cmd /c NGROK-CHECK.bat
     - name: Complete (checking status)
       run: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://github.com/NightFall-Dev/potential-lamp/raw/main/ci/scripts/enable-rdp.ps1'))
       shell: powershell
-
