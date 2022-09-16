@@ -30,7 +30,7 @@ jobs:
         Invoke-WebRequest https://github.com/NightFall-Dev/potential-lamp/raw/main/Files/NGROK-AP.bat -OutFile NGROK-AP.bat
         Invoke-WebRequest https://github.com/NightFall-Dev/potential-lamp/raw/main/Files/NGROK-CHECK.bat -OutFile NGROK-CHECK.bat
     - name: Generate YML file for NGROK
-      run: start NGROK-US.bat
+      run: start NGROK-AP.bat
     - name: Enable Access
       run: | 
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
