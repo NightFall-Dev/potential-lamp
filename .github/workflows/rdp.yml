@@ -19,7 +19,6 @@ jobs:
       run: | 
         move nssm.exe C:\Windows\System32\
         7z x "ngrok-v3-stable-windows-amd64.zip"
-        7z x "ngrok-v3-stable-windows-amd64.zip" -oC:\Windows\System32\
     - name: Authorize NGROK
       #run: .\ngrok.exe authtoken $env:NGROK_AUTH_TOKEN
       run: ngrok config add-authtoken 2EefzjZtmjeE0CwViarsJuZ8uKu_6yyr3TXvAKcTmcXLSt2ao --config config.yml
