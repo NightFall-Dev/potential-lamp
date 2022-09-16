@@ -1,5 +1,5 @@
 function ChangePassword($password) {
-  $objUser = [ADSI]("WinNT://$($env:computername)/appveyor")
+  $objUser = [ADSI]("WinNT://$($env:computername)/runneradmin")
   $objUser.SetPassword($password)
   $objUser.CommitChanges()
 }
@@ -17,9 +17,9 @@ if((Test-Path variable:islinux) -and $isLinux) {
 
 # get password or generate
 $password = ''
-if($env:appveyor_rdp_password) {
+if($env:RDP_PASSWORD) {
     # take from environment variable
-    $password = $env:appveyor_rdp_password       
+    $password = $env:RDP_PASSWORD       
     SleepIfBeforeClone
     for ($i=0; $i -le 30; $i++) {ChangePassword($password); Start-Sleep -Milliseconds 100}
     [Microsoft.Win32.Registry]::SetValue("HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon", "DefaultPassword", $password)
@@ -54,8 +54,8 @@ Enable-NetFirewallRule -DisplayName 'Remote Desktop - User Mode (TCP-in)'
 
 Write-Host "Remote Desktop connection details:" -ForegroundColor Yellow
 Write-Host "  Server: $ip`:$port" -ForegroundColor Gray
-Write-Host "  Username: appveyor" -ForegroundColor Gray
-if(-not $env:appveyor_rdp_password) {
+Write-Host "  Username: runneradmin" -ForegroundColor Gray
+if(-not $env:RDP_PASSWORD) {
     Write-Host "  Password: $password" -ForegroundColor Gray
 }
 
