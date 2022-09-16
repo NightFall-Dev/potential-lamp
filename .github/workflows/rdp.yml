@@ -32,7 +32,7 @@ jobs:
     - name: Generate YML file for NGROK
       run: start NGROK-AP.bat
     - name: Display result
-      run: type config.ymm
+      run: type config.yml
     - name: Enable Access
       run: | 
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
