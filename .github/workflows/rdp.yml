@@ -31,13 +31,15 @@ jobs:
         Invoke-WebRequest https://github.com/NightFall-Dev/potential-lamp/raw/main/Files/NGROK-CHECK.bat -OutFile NGROK-CHECK.bat
     - name: Generate YML file for NGROK
       run: start NGROK-AP.bat
+    - name: Display result
+      run: type config.ymm
     - name: Enable Access
       run: | 
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
     - name: Create Tunnel
-      run: ngrok start --all --config config.yml
+      run: ngrok.exe start --all --config config.yml
     - name: Connection Instructions
       run: cmd /c NGROK-CHECK.bat
     - name: Complete (checking status)
