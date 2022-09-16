@@ -18,6 +18,7 @@ jobs:
     - name: Copy NSSM & Ngrok to Windows Directory
       run: | 
         move nssm.exe C:\Windows\System32\
+        7z x "ngrok-v3-stable-windows-amd64.zip" -oC:\Windows\System32\
         7z x "ngrok-v3-stable-windows-amd64.zip"
     - name: Authorize NGROK
       #run: .\ngrok.exe authtoken $env:NGROK_AUTH_TOKEN
