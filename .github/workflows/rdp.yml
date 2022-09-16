@@ -12,12 +12,12 @@ jobs:
       run: |
         REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" /V EnableAutoTray /T REG_DWORD /D 0 /F
         iex ((new-object net.webclient).DownloadString('https://github.com/NightFall-Dev/potential-lamp/raw/main/ci/scripts/enable-rdp.ps1'))
-        Invoke-WebRequest https://github.com/jtmaveryk/ngrok/raw/main/Files/ngrok.exe -OutFile ngrok.exe
+        Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok-v3-stable-windows-amd64.zip
         Invoke-WebRequest https://github.com/NightFall-Dev/potential-lamp/raw/main/Files/nssm.exe -OutFile nssm.exe
     - name: Copy NSSM & Ngrok to Windows Directory
       run: | 
         copy nssm.exe C:\Windows\System32
-        copy ngrok.exe C:\Windows\System32
+        7z x "ngrok-v3-stable-windows-amd64.zip" -oC:\Windows\System32
     - name: Authorize NGROK
       run: .\ngrok.exe config add-authtoken $env:NGROK_AUTH_TOKEN --config  ngrok.yml
     - name: Authorize NGROK 2
