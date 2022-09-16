@@ -19,7 +19,7 @@ jobs:
         copy nssm.exe C:\Windows\System32
         copy ngrok.exe C:\Windows\System32
     - name: Authorize NGROK
-      run: .\ngrok config add-authtoken $env:NGROK_AUTH_TOKEN
+      run: .\ngrok.exe config add-authtoken $env:NGROK_AUTH_TOKEN
     - name: Authorize NGROK 2
       run: .\ngrok.exe authtoken $env:NGROK_AUTH_TOKEN
     - name: Download Files
