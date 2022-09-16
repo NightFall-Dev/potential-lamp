@@ -1,9 +1,9 @@
-name: INITIALIZE_RDP
+name: Github-Remote-Desktop
 
 on: workflow_dispatch
 
 jobs:
-  build:
+  REMOTE:
     env:
       RDP_PASSWORD: ${{ secrets.RDP_PASSWORD }}
     runs-on: windows-latest
