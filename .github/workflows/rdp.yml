@@ -37,7 +37,7 @@ jobs:
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
     - name: Create Tunnel
-      run: ngrok start --all --config ${{ github.GITHUB_WORKSPACE }}config.yml
+      run: ngrok start --all --config ${{ env.GITHUB_WORKSPACE }}config.yml
     - name: Connection Instructions
       run: cmd /c NGROK-CHECK.bat
     - name: Complete (checking status)
