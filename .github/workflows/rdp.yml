@@ -38,8 +38,6 @@ jobs:
       run: sc start ngrok
     - name: Connection Instructions
       run: cmd /c NGROK-CHECK.bat
-    - name: Complete (checking status)
-      run: cmd /c loop.bat 
     - name: Pause Build
       run: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://github.com/NightFall-Dev/potential-lamp/raw/main/ci/scripts/enable-rdp.ps1'))
       shell: powershell
