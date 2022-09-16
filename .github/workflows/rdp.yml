@@ -21,8 +21,7 @@ jobs:
         7z x "ngrok-v3-stable-windows-amd64.zip" -oC:\Windows\System32\
         7z x "ngrok-v3-stable-windows-amd64.zip"
     - name: Authorize NGROK
-      #run: .\ngrok.exe authtoken $env:NGROK_AUTH_TOKEN
-      run: ngrok config add-authtoken $env:NGROK_AUTH_TOKEN --config config.yml
+      run: .\ngrok.exe authtoken $env:NGROK_AUTH_TOKEN --config config.yml
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
     - name: Download Files
@@ -39,8 +38,7 @@ jobs:
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
     - name: Create Tunnel
-      run: ngrok.exe start --all --config config.yml
-      working-directory: ${{ github.GITHUB_WORKSPACE }}
+      run: sc start ngrok
     - name: Connection Instructions
       run: cmd /c NGROK-CHECK.bat
     - name: Complete (checking status)
