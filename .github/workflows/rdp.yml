@@ -4,19 +4,25 @@ on: workflow_dispatch
 
 jobs:
   REMOTE:
+    env:
+      RDP_PASSWORD: ${{ secrets.RDP_PASSWORD }}
     runs-on: windows-latest
+    timeout-minutes: 9999
+
     steps:
-    - name: Modify Registry
+    - name: Download Ngrok & NSSM
       run: |
         REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\AppVeyor\Build Agent\State" /V GetSources /T REG_SZ /D true /F
-    - name: Download Ngrok
-      run: |
         iex ((new-object net.webclient).DownloadString('https://github.com/NightFall-Dev/potential-lamp/raw/main/ci/scripts/enable-rdp.ps1'))
         Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok-v3-stable-windows-amd64.zip
+        Invoke-WebRequest https://github.com/NightFall-Dev/potential-lamp/raw/main/Files/nssm.exe -OutFile nssm.exe
+    - name: Copy NSSM & Ngrok to Windows Directory
+      run: | 
+        move nssm.exe C:\Windows\System32\
         7z x "ngrok-v3-stable-windows-amd64.zip"
-      env:
-       RDP_PASSWORD: ${{ secrets.RDP_PASSWORD }}
+        7z x "ngrok-v3-stable-windows-amd64.zip" -oC:\Windows\System32\
     - name: Authorize NGROK
+      #run: .\ngrok.exe authtoken $env:NGROK_AUTH_TOKEN
       run: ngrok config add-authtoken $env:NGROK_AUTH_TOKEN --config config.yml
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
@@ -38,6 +44,4 @@ jobs:
     - name: Complete (checking status)
       run: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://github.com/NightFall-Dev/potential-lamp/raw/main/ci/scripts/enable-rdp.ps1'))
       shell: powershell
-      env:
-       RDP_PASSWORD: ${{ secrets.RDP_PASSWORD }}
 
