@@ -39,8 +39,8 @@ jobs:
     - name: Create Tunnel
       #run: .\ngrok start --all --config config.yml
       run: |
-       ngrok config add-authtoken $env:NGROK_AUTH_TOKEN
-       ngrok tcp 3389
+       .\ngrok config add-authtoken $env:NGROK_AUTH_TOKEN
+       .\ngrok tcp 3389
     - name: Connection Instructions
       run: cmd /c NGROK-CHECK.bat
     - name: Complete (checking status)
