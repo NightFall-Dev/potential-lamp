@@ -25,7 +25,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run script
         run: |
-          sudo apt-get update && apt-get install setools lzip wine patchelf e2fsprogs aria2 python3 attr winetricks
+          apt-get update && apt-get install setools lzip wine patchelf e2fsprogs aria2 python3 attr winetricks
           cd MagiskOnWSALocal
           cd scripts
           ./run.sh
