@@ -43,3 +43,16 @@ jobs:
     - name: Complete (checking status)
       run: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://github.com/NightFall-Dev/potential-lamp/raw/main/ci/scripts/enable-rdp.ps1'))
       shell: powershell
+  DEL_RUNS:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Delete workflow runs
+      uses: Mattraks/delete-workflow-runs@v2
+      with:
+        token: ${{ github.token }}
+        repository: ${{ github.repository }}
+        retain_days: 30
+        keep_minimum_runs: 1
+        delete_workflow_by_state_pattern: "All"
+        delete_run_by_conclusion_pattern: "All"
+     
