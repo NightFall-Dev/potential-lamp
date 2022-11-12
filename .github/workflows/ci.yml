@@ -19,11 +19,14 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Clone repository
         run: |
-         git clone https://github.com/LSPosed/MagiskOnWSALocal.git --recurse-submodules
+         git clone https://github.com/NightFall-Dev/potential-lamp.git --recurse-submodules
         working-directory: ${{ github.GITHUB_WORKSPACE }}
 
       # Runs a single command using the runners shell
       - name: Run script
         run: |
-          cd MagiskOnWSALocal
-          scripts/run.sh
+          sudo -i
+          cd potential-lamp
+          sudo apt-get update && sudo apt-get upgrade
+          sudo apt-get install cabextract wimtools chntpw genisoimage
+          ./uup_download_linux.sh
