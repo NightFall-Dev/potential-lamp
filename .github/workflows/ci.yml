@@ -18,3 +18,11 @@ jobs:
           chmod +x *.sh 
           ./uup_download_linux.sh
           ls -al
+
+      - name: Upload WSA to release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: 22621.1_PROFESSIONAL_X64_EN-US.ISO
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true
+          tag: 22621.819
