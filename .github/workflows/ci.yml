@@ -1,28 +1,13 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
-
-# Controls when the workflow will run
+name: Runner
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  work_runner:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Clone repository
-        run: |
-         git clone https://github.com/NightFall-Dev/potential-lamp.git --recurse-submodules
-        working-directory: ${{ github.GITHUB_WORKSPACE }}
+      - name: Checkout
+        uses: actions/checkout@v3.0.1
 
-      # Runs a single command using the runners shell
       - name: Run script
         run: |
           cd potential-lamp
@@ -30,3 +15,4 @@ jobs:
           sudo apt-get install cabextract wimtools chntpw genisoimage
           chmod +x *.sh 
           ./uup_download_linux.sh
+          ls -al
