@@ -5,14 +5,16 @@ jobs:
   work_runner:
     runs-on: ubuntu-latest
     steps:
+      - name: System update
+        run: |
+         sudo apt-get update && sudo apt-get upgrade
+         sudo apt-get install cabextract wimtools chntpw genisoimage
+
       - name: Checkout
         uses: actions/checkout@v3.0.1
 
       - name: Run script
         run: |
-          cd potential-lamp
-          sudo apt-get update && sudo apt-get upgrade
-          sudo apt-get install cabextract wimtools chntpw genisoimage
           chmod +x *.sh 
           ./uup_download_linux.sh
           ls -al
