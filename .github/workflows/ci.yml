@@ -28,4 +28,5 @@ jobs:
           cd potential-lamp
           sudo apt-get update && sudo apt-get upgrade
           sudo apt-get install cabextract wimtools chntpw genisoimage
-          sudo ./uup_download_linux.sh
+          chmod +x *.sh 
+          ./uup_download_linux.sh
