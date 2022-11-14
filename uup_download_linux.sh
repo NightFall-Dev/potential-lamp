@@ -39,7 +39,7 @@ destDir="UUPs"
 tempScript="aria2_script.$RANDOM.txt"
 
 echo "Downloading converters..."
-aria2c --no-conf --log-level=info --log="aria2_download.log" -x16 -s16 -j5 --allow-overwrite=true --auto-file-renaming=false -d"files" -i"files/converter_multi"
+aria2c --no-conf --log-level=info --log="aria2_download.log" -x16 -s16 -j5 --allow-overwrite=true --auto-file-renaming=false -d"Files" -i"Files/converter_multi"
 if [ $? != 0 ]; then
   echo "We have encountered an error while downloading files."
   exit 1
@@ -69,7 +69,7 @@ if [ $? != 0 ]; then
 fi
 
 echo ""
-if [ -e ./files/convert.sh ]; then
-  chmod +x ./files/convert.sh
-  ./files/convert.sh esd "$destDir" 0
+if [ -e ./Files/convert.sh ]; then
+  chmod +x ./Files/convert.sh
+  ./Files/convert.sh esd "$destDir" 0
 fi
