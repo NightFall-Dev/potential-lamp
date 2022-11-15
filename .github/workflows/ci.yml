@@ -16,7 +16,6 @@ jobs:
       - name: Run script
         run: |
           chmod +x *.sh 
-          ./uup_download_linux.sh
           ./uup_download_apps.sh
           ls -al
 
