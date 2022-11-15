@@ -17,6 +17,7 @@ jobs:
         run: |
           chmod +x *.sh 
           ./uup_download_linux.sh
+          ./uup_download_apps.sh
           ls -al
 
       - name: Upload WSA to release
